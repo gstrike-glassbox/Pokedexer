@@ -32,21 +32,13 @@ const Pokedex: FC = () => {
         <div className="site-card-wrapper" style={{ textAlign: 'center', zIndex: 1, width: '100%' }}>
             <Row gutter={16}>
                 {console.log(JSON.stringify(pokemon))}
-                <Col span={8}>
-                    <Card title={pokemon.length > 0 ? pokemon[0].name : ""} bordered={true}>
-                        <img src={spriteUrl + `${pokemon.length > 0 ? pokemon[0].id : ""}.png`} />
-                    </Card>
-                </Col>
-                <Col span={8}>
-                    <Card title={pokemon.length > 0 ? pokemon[1].name : ""} bordered={true}>
-                        <img src={spriteUrl + `${pokemon.length > 0 ? pokemon[1].id : ""}.png`} />
-                    </Card>
-                </Col>
-                <Col span={8}>
-                    <Card title={pokemon.length > 0 ? pokemon[2].name : ""} bordered={true}>
-                        <img src={spriteUrl + `${pokemon.length > 0 ? pokemon[2].id : ""}.png`} />
-                    </Card>
-                </Col>
+                {pokemon.length > 0 ? pokemon.map(poke => {
+                     return <Col span={8}>
+                     <Card title={poke.name} bordered={true}>
+                         <img src={spriteUrl + `${poke.id}.png`} alt="pokemon" />
+                     </Card>
+                 </Col>
+                }) : ""}
             </Row>
         </div>
     );
