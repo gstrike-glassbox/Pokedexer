@@ -7,26 +7,28 @@ import me.sargunvohra.lib.pokekotlin.client.PokeApiClient;
 import me.sargunvohra.lib.pokekotlin.model.NamedApiResourceList;
 import me.sargunvohra.lib.pokekotlin.model.Pokemon;
 import me.sargunvohra.lib.pokekotlin.model.PokemonSprites;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
+@Service
 public class PokemonService {
     private PokeApi pokeApi;
-    private static final int TOTAL_POKEMON = 20;
+    private List<GenericDisplayPokemon> pokemonList;
+    private static final int TOTAL_POKEMON = 898;
 
+    @Autowired
     public PokemonService() {
       pokeApi = new PokeApiClient();
+      pokemonList = getAllDisplayPokemon();
+      System.out.println("Here");
     }
 
-    public List<GenericDisplayPokemon> getAllDisplayPokemon() throws ExecutionException, InterruptedException {
+    private List<GenericDisplayPokemon> getAllDisplayPokemon() {
         List<GenericDisplayPokemon> genericDisplayPokemonList = new ArrayList<>();
-        CompletableFuture<NamedApiResourceList> pokemonList = CompletableFuture.supplyAsync(() -> pokeApi.getPokemonList(0, 10));
-        while (!pokemonList.isDone()) {
-            System.out.println("CompletableFuture is not finished yet...");
-        }
         for (int i = 1; i <= TOTAL_POKEMON; i++) {
             Pokemon currentPokemon = pokeApi.getPokemon(i);
             GenericDisplayPokemon pokemonFromCache = CacheRepository.getIfPresent(currentPokemon.getName());
@@ -48,5 +50,8 @@ public class PokemonService {
             }
         }
         return genericDisplayPokemonList;
+    }
+    public List<GenericDisplayPokemon> getAllPokemon() {
+        return pokemonList;
     }
 }
