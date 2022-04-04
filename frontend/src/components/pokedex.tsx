@@ -16,7 +16,6 @@ const Pokedex: FC = () => {
 
     const [pokemon, setPokemon] = useState<Pokemon[]>([]);
     const [isLoading, setIsLoading] = useState(false);
-    let spriteUrl: string = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/";
 
     const getAllPokemon = async () => {
         setIsLoading(true);

@@ -15,6 +15,7 @@ import java.util.concurrent.ExecutionException;
 
 public class PokemonService {
     private PokeApi pokeApi;
+    private static final int TOTAL_POKEMON = 20;
 
     public PokemonService() {
       pokeApi = new PokeApiClient();
@@ -26,8 +27,9 @@ public class PokemonService {
         while (!pokemonList.isDone()) {
             System.out.println("CompletableFuture is not finished yet...");
         }
-        pokemonList.get().component4().stream().forEach(pokemon -> {
-            GenericDisplayPokemon pokemonFromCache = CacheRepository.getIfPresent(pokemon.getName());
+        for (int i = 1; i <= TOTAL_POKEMON; i++) {
+            Pokemon currentPokemon = pokeApi.getPokemon(i);
+            GenericDisplayPokemon pokemonFromCache = CacheRepository.getIfPresent(currentPokemon.getName());
             if (pokemonFromCache != null) {
                 genericDisplayPokemonList.add(new GenericDisplayPokemon(pokemonFromCache.getId(), pokemonFromCache.getName(),
                         pokemonFromCache.getMaleFrontSprite(), pokemonFromCache.getFemaleFrontSprite(),
@@ -35,16 +37,16 @@ public class PokemonService {
                 System.out.println("From Cache");
             }
             else {
-                PokemonSprites currentPokemonSprites = pokeApi.getPokemon(pokemon.getId()).getSprites();
+                PokemonSprites currentPokemonSprites = currentPokemon.getSprites();
                 String maleFrontSprite = currentPokemonSprites.getFrontDefault();
                 String femaleFrontSprite = currentPokemonSprites.getFrontFemale();
                 String maleFrontSpriteShiny = currentPokemonSprites.getFrontShiny();
                 String femaleFrontSpriteShiny = currentPokemonSprites.getFrontShinyFemale();
-                GenericDisplayPokemon genericDisplayPokemon = new GenericDisplayPokemon(pokemon.getId(), pokemon.getName(), maleFrontSprite, femaleFrontSprite, maleFrontSpriteShiny, femaleFrontSpriteShiny);
+                GenericDisplayPokemon genericDisplayPokemon = new GenericDisplayPokemon(currentPokemon.getId(), currentPokemon.getName(), maleFrontSprite, femaleFrontSprite, maleFrontSpriteShiny, femaleFrontSpriteShiny);
                 CacheRepository.set(genericDisplayPokemon);
-                genericDisplayPokemonList.add(new GenericDisplayPokemon(pokemon.getId(), pokemon.getName(), maleFrontSprite, femaleFrontSprite, maleFrontSpriteShiny, femaleFrontSpriteShiny));
+                genericDisplayPokemonList.add(new GenericDisplayPokemon(currentPokemon.getId(), currentPokemon.getName(), maleFrontSprite, femaleFrontSprite, maleFrontSpriteShiny, femaleFrontSpriteShiny));
             }
-        });
+        }
         return genericDisplayPokemonList;
     }
 }

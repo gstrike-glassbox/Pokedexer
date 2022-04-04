@@ -3,6 +3,8 @@ package com.example.pokedexer.pokedex.repositories;
 import com.example.pokedexer.pokedex.dto.GenericDisplayPokemon;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
+
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 public class CacheRepository {
@@ -20,4 +22,5 @@ public class CacheRepository {
     public static GenericDisplayPokemon getIfPresent(String key) {
         return genericPokemonCache.getIfPresent(key);
     }
+
 }
