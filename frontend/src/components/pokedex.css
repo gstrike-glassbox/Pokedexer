@@ -1,0 +1,14 @@
+@media screen and (max-width: 400px) {
+    .ant-card-head {
+        font-size: 0.8em!important;
+    }
+    .female-sprite {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 780px) {
+    .female-sprite {
+        display: none;
+    }
+}

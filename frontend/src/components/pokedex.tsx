@@ -1,10 +1,15 @@
 import { Card, Col, Row } from "antd";
 import axios from "axios";
 import { FC, useEffect, useState } from "react";
+import './pokedex.css';
 
 interface Pokemon {
-    name: String,
-    id: number
+    id: number,
+    name: string,
+    maleFrontSprite: string,
+    maleFrontSpriteShiny: string,
+    femaleFrontSprite?: string,
+    femaleFrontSpriteShiny?: string,
 }
 
 const Pokedex: FC = () => {
@@ -18,7 +23,7 @@ const Pokedex: FC = () => {
         axios.get("http://localhost:8080/pokemon/all")
             .then((response) => {
                 let pokemonArr: Pokemon[] = [];
-                response.data.results.forEach((pokemon: Pokemon) => pokemonArr.push({ name: pokemon.name, id: pokemon.id }));
+                response.data.forEach((pokemon: Pokemon) => pokemonArr.push({ name: pokemon.name, id: pokemon.id, maleFrontSprite: pokemon.maleFrontSprite, maleFrontSpriteShiny: pokemon.maleFrontSpriteShiny, femaleFrontSprite: pokemon.femaleFrontSprite, femaleFrontSpriteShiny: pokemon.femaleFrontSpriteShiny }));
                 setPokemon([...pokemonArr]);
             });
         setIsLoading(false);
@@ -35,7 +40,10 @@ const Pokedex: FC = () => {
                 {pokemon.length > 0 ? pokemon.map(poke => {
                      return <Col span={8}>
                      <Card title={poke.name} bordered={true}>
-                         <img src={spriteUrl + `${poke.id}.png`} alt="pokemon" />
+                         <img src={poke.maleFrontSprite} alt="pokemon-male" />
+                         <img src={poke.maleFrontSpriteShiny} alt="pokemon-male-shiny" />
+                         {poke.femaleFrontSprite ? <img className="female-sprite" src={poke.femaleFrontSprite} alt="pokemon-female" /> : null}
+                         {poke.femaleFrontSpriteShiny ? <img className="female-sprite" src={poke.femaleFrontSpriteShiny} alt="pokemon-female-shiny" /> : null}
                      </Card>
                  </Col>
                 }) : ""}
