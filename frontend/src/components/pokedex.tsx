@@ -19,7 +19,7 @@ const Pokedex: FC = () => {
 
     const getAllPokemon = async () => {
         setIsLoading(true);
-        axios.get("http://localhost:8080/pokemon/all")
+        axios.get("http://localhost:8080/pokemon/displaypokemon")
             .then((response) => {
                 let pokemonArr: Pokemon[] = [];
                 response.data.forEach((pokemon: Pokemon) => pokemonArr.push({ name: pokemon.name, id: pokemon.id, maleFrontSprite: pokemon.maleFrontSprite, maleFrontSpriteShiny: pokemon.maleFrontSpriteShiny, femaleFrontSprite: pokemon.femaleFrontSprite, femaleFrontSpriteShiny: pokemon.femaleFrontSpriteShiny }));
