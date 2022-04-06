@@ -1,20 +1,13 @@
-import { Card, Col, Input, Row } from "antd";
+import { Col, Input, Row } from "antd";
 import axios from "axios";
 import { FC, useEffect, useState } from "react";
+import { IPokemon } from "../interfaces/IPokemon";
 import './pokedex.css';
-
-interface Pokemon {
-    id: number;
-    [name: string]: string | number | undefined;
-    maleFrontSprite: string;
-    maleFrontSpriteShiny: string;
-    femaleFrontSprite?: string;
-    femaleFrontSpriteShiny?: string;
-}
+import PokemonCard from "./pokemonCards/pokemonCard";
 
 const Pokedex: FC = () => {
 
-    const [pokemon, setPokemon] = useState<Pokemon[]>([]);
+    const [pokemon, setPokemon] = useState<IPokemon[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [searchParam] = useState(["name", "id"]);
     const [q, setQ] = useState("");
@@ -23,8 +16,11 @@ const Pokedex: FC = () => {
         setIsLoading(true);
         axios.get("http://localhost:8080/pokemon/displaypokemon")
             .then((response) => {
-                let pokemonArr: Pokemon[] = [];
-                response.data.forEach((pokemon: Pokemon) => pokemonArr.push({ name: pokemon.name, id: pokemon.id, maleFrontSprite: pokemon.maleFrontSprite, maleFrontSpriteShiny: pokemon.maleFrontSpriteShiny, femaleFrontSprite: pokemon.femaleFrontSprite, femaleFrontSpriteShiny: pokemon.femaleFrontSpriteShiny }));
+                let pokemonArr: IPokemon[] = [];
+                response.data.forEach((pokemon: IPokemon) => pokemonArr.push({ name: pokemon.name, id: pokemon.id, types: pokemon.types, maleFrontSprite: pokemon.maleFrontSprite, maleBackSprite: pokemon.maleBackSprite,
+                    maleFrontSpriteShiny: pokemon.maleFrontSpriteShiny, femaleFrontSprite: pokemon.femaleFrontSprite, femaleFrontSpriteShiny: pokemon.femaleFrontSpriteShiny,
+                    femaleBackSprite: pokemon.femaleBackSprite
+                    }));
                 setPokemon([...pokemonArr]);
             });
         setIsLoading(false);
@@ -34,8 +30,8 @@ const Pokedex: FC = () => {
         getAllPokemon();
     }, []);
 
-    const search = (pokemonArr: Pokemon[]) => {
-        return pokemonArr.filter((pokemon: Pokemon) => {
+    const search = (pokemonArr: IPokemon[]) => {
+        return pokemonArr.filter((pokemon: IPokemon) => {
             return searchParam.some((filteredPokemon) => {
                 return (
                     // @ts-ignore: Object is possibly 'null'.
@@ -67,13 +63,9 @@ const Pokedex: FC = () => {
             </Row>
             <Row gutter={16}>
                 {pokemon.length > 0 ? search(pokemon).map(poke => {
-                    return <Col span={8}>
-                        <Card title={poke.name} bordered={true}>
-                            <img src={poke.maleFrontSprite} alt="pokemon-male" />
-                            <img src={poke.maleFrontSpriteShiny} alt="pokemon-male-shiny" />
-                            {poke.femaleFrontSprite ? <img className="female-sprite" src={poke.femaleFrontSprite} alt="pokemon-female" /> : null}
-                            {poke.femaleFrontSpriteShiny ? <img className="female-sprite" src={poke.femaleFrontSpriteShiny} alt="pokemon-female-shiny" /> : null}
-                        </Card>
+                    return <Col span={8}  key={poke.id}>
+                        <PokemonCard id={poke.id} name={poke.name} types={poke.types} maleFrontSprite={poke.maleFrontSprite} maleFrontSpriteShiny={poke.maleFrontSpriteShiny} femaleFrontSprite={poke.femaleFrontSprite}
+                        femaleFrontSpriteShiny={poke.femaleFrontSpriteShiny} maleBackSprite={poke.maleBackSprite} femaleBackSprite={poke.femaleBackSprite}/>
                     </Col>
                 }) : ""}
             </Row>

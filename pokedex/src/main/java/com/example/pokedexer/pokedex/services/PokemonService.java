@@ -60,7 +60,15 @@ public class PokemonService {
                     String femaleFrontSprite = currentPokemonSprites.getFrontFemale();
                     String maleFrontSpriteShiny = currentPokemonSprites.getFrontShiny();
                     String femaleFrontSpriteShiny = currentPokemonSprites.getFrontShinyFemale();
-                    displayPokemonList.add(new GenericDisplayPokemon(currentPokemon.getId(), currentPokemon.getName(), maleFrontSprite, femaleFrontSprite, maleFrontSpriteShiny, femaleFrontSpriteShiny));
+                    String maleBackSprite = currentPokemonSprites.getBackDefault();
+                    String femaleBackSprite = currentPokemonSprites.getBackFemale();
+                    ArrayList<String> typesArr = new ArrayList<>();
+                    currentPokemon.getTypes().stream().forEach(types -> {
+                        System.out.println(types.getType().getName());
+                        typesArr.add(types.getType().getName());
+                    });
+                    displayPokemonList.add(new GenericDisplayPokemon(currentPokemon.getId(), currentPokemon.getName(),
+                            maleFrontSprite, femaleFrontSprite, maleFrontSpriteShiny, femaleFrontSpriteShiny, maleBackSprite, femaleBackSprite, typesArr));
                 }
                 RedisRepository.setObject("displayPokemon", displayPokemonList, jedisPool);
             }
