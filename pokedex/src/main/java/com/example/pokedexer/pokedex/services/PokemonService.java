@@ -28,7 +28,6 @@ public class PokemonService {
         pokeApi = new PokeApiClient();
         pokemonList = getAllPokemon();
         displayPokemonList = new ArrayList<>();
-        System.out.println("Here");
     }
 
     private List<Pokemon> getAllPokemon() {
