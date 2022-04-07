@@ -3,12 +3,12 @@ import { FC, ReactElement, useState } from "react";
 import '../pokedex.css';
 import CardHover from "./cardHover";
 import './card.css'
-import { IPokemon } from "../../interfaces/IPokemon";
+import { IDisplayPokemon} from "../../interfaces/IDisplayPokemon";
 
-const PokemonCard: FC<IPokemon> = (props: IPokemon): ReactElement => {
+const PokemonCard: FC<IDisplayPokemon> = (props: IDisplayPokemon, {allowHover}): ReactElement => {
     const [hoverOver, setHoverOver] = useState<boolean>(false);
     
-    const initHover = () => {
+    const triggerHover = () => {
         setHoverOver(prev => !prev);
     }
     return (
@@ -16,10 +16,10 @@ const PokemonCard: FC<IPokemon> = (props: IPokemon): ReactElement => {
         <Card className="card" 
             title={`${(props.name as string)[0].toUpperCase() + (props.name as string).slice(1)}`} 
             bordered={true}
-            onMouseEnter={initHover}
-            onMouseLeave={initHover}
+            onMouseEnter={triggerHover}
+            onMouseLeave={triggerHover}
             >
-            {hoverOver ? <CardHover id={props.id} name={(props.name as string)} types={props.types} maleFrontSprite={props.maleFrontSprite} maleBackSprite={props.maleBackSprite} femaleFrontSprite={props.femaleFrontSprite} 
+            {hoverOver ? <CardHover id={props.id} name={(props.name as string)} types={props.types} maleFrontSprite={props.maleFrontSprite} maleBackSprite={(props.maleBackSprite as string)} femaleFrontSprite={props.femaleFrontSprite} 
             femaleBackSprite={props.femaleBackSprite} /> : null}
             <img src={props.maleFrontSprite} alt="pokemon-male" />
             <img src={props.maleFrontSpriteShiny} alt="pokemon-male-shiny" />

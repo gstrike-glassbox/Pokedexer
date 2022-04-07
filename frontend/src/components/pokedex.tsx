@@ -1,8 +1,11 @@
 import { Col, Input, Row } from "antd";
 import axios from "axios";
 import { FC, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import {App, SetPokemon} from "../App";
 import { IPokemon } from "../interfaces/IPokemon";
 import './pokedex.css';
+import Pokemon from "./pokemon";
 import PokemonCard from "./pokemonCards/pokemonCard";
 
 const Pokedex: FC = () => {
@@ -42,6 +45,10 @@ const Pokedex: FC = () => {
                 );
             });
         });
+    };
+
+    const pokemonCardOnClick = (cardPokemon: IPokemon) => {
+        SetPokemon(cardPokemon)
     }
 
     return (
@@ -63,9 +70,11 @@ const Pokedex: FC = () => {
             </Row>
             <Row gutter={16}>
                 {pokemon.length > 0 ? search(pokemon).map(poke => {
-                    return <Col span={8}  key={poke.id}>
-                        <PokemonCard id={poke.id} name={poke.name} types={poke.types} maleFrontSprite={poke.maleFrontSprite} maleFrontSpriteShiny={poke.maleFrontSpriteShiny} femaleFrontSprite={poke.femaleFrontSprite}
-                        femaleFrontSpriteShiny={poke.femaleFrontSpriteShiny} maleBackSprite={poke.maleBackSprite} femaleBackSprite={poke.femaleBackSprite}/>
+                    return <Col span={8} key={poke.id} onClick={() => pokemonCardOnClick(poke)}>
+                        <Link to={`pokemon/${poke.name}`}>
+                        <PokemonCard id={poke.id} name={(poke.name as string)} types={poke.types} maleFrontSprite={poke.maleFrontSprite} maleFrontSpriteShiny={poke.maleFrontSpriteShiny} femaleFrontSprite={poke.femaleFrontSprite}
+                        femaleFrontSpriteShiny={poke.femaleFrontSpriteShiny} maleBackSprite={poke.maleBackSprite} femaleBackSprite={poke.femaleBackSprite} allowHover={false}/>
+                        </Link>
                     </Col>
                 }) : ""}
             </Row>
