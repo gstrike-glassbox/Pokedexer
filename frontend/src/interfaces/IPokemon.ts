@@ -1,6 +1,6 @@
 export interface IPokemon {
     id: number;
-    [name: string]: string | number | undefined | string[] | IPokemon;
+    name: string;
     types: string[];
     maleFrontSprite: string;
     maleFrontSpriteShiny: string;

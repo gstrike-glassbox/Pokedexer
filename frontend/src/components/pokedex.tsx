@@ -1,8 +1,8 @@
 import { Col, Input, Row } from "antd";
 import axios from "axios";
-import { FC, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import {App, SetPokemon} from "../App";
+import {App as appPoke, PokemonContext} from "../App";
 import { IPokemon } from "../interfaces/IPokemon";
 import './pokedex.css';
 import Pokemon from "./pokemon";
@@ -10,28 +10,10 @@ import PokemonCard from "./pokemonCards/pokemonCard";
 
 const Pokedex: FC = () => {
 
-    const [pokemon, setPokemon] = useState<IPokemon[]>([]);
-    const [isLoading, setIsLoading] = useState(false);
     const [searchParam] = useState(["name", "id"]);
     const [q, setQ] = useState("");
+    const pokemon = useContext(PokemonContext);
 
-    const getAllPokemon = async () => {
-        setIsLoading(true);
-        axios.get("http://localhost:8080/pokemon/displaypokemon")
-            .then((response) => {
-                let pokemonArr: IPokemon[] = [];
-                response.data.forEach((pokemon: IPokemon) => pokemonArr.push({ name: pokemon.name, id: pokemon.id, types: pokemon.types, maleFrontSprite: pokemon.maleFrontSprite, maleBackSprite: pokemon.maleBackSprite,
-                    maleFrontSpriteShiny: pokemon.maleFrontSpriteShiny, femaleFrontSprite: pokemon.femaleFrontSprite, femaleFrontSpriteShiny: pokemon.femaleFrontSpriteShiny,
-                    femaleBackSprite: pokemon.femaleBackSprite
-                    }));
-                setPokemon([...pokemonArr]);
-            });
-        setIsLoading(false);
-    }
-
-    useEffect(() => {
-        getAllPokemon();
-    }, []);
 
     const search = (pokemonArr: IPokemon[]) => {
         return pokemonArr.filter((pokemon: IPokemon) => {
@@ -46,10 +28,6 @@ const Pokedex: FC = () => {
             });
         });
     };
-
-    const pokemonCardOnClick = (cardPokemon: IPokemon) => {
-        SetPokemon(cardPokemon)
-    }
 
     return (
         <div className="site-card-wrapper" style={{ textAlign: 'center', zIndex: 1, width: '100%' }}>
@@ -70,10 +48,10 @@ const Pokedex: FC = () => {
             </Row>
             <Row gutter={16}>
                 {pokemon.length > 0 ? search(pokemon).map(poke => {
-                    return <Col span={8} key={poke.id} onClick={() => pokemonCardOnClick(poke)}>
-                        <Link to={`pokemon/${poke.name}`}>
-                        <PokemonCard id={poke.id} name={(poke.name as string)} types={poke.types} maleFrontSprite={poke.maleFrontSprite} maleFrontSpriteShiny={poke.maleFrontSpriteShiny} femaleFrontSprite={poke.femaleFrontSprite}
-                        femaleFrontSpriteShiny={poke.femaleFrontSpriteShiny} maleBackSprite={poke.maleBackSprite} femaleBackSprite={poke.femaleBackSprite} allowHover={false}/>
+                    return <Col span={8} key={poke.id}>
+                        <Link to={`pokemon/${poke.name}`} >
+                            <PokemonCard id={poke.id} name={(poke.name as string)} types={poke.types} maleFrontSprite={poke.maleFrontSprite} maleFrontSpriteShiny={poke.maleFrontSpriteShiny} femaleFrontSprite={poke.femaleFrontSprite}
+                            femaleFrontSpriteShiny={poke.femaleFrontSpriteShiny} maleBackSprite={poke.maleBackSprite} femaleBackSprite={poke.femaleBackSprite} allowHover={false}/>
                         </Link>
                     </Col>
                 }) : ""}
