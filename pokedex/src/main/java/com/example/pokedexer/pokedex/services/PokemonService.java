@@ -32,7 +32,6 @@ public class PokemonService {
 
     private List<Pokemon> getAllPokemon() {
         List<Pokemon> pokemonFromCache = RedisRepository.getObjectList("allPokemon", jedisPool, Pokemon.class);
-
         if (pokemonFromCache == null || (pokemonFromCache != null && pokemonFromCache.size() < TOTAL_POKEMON)) {
             List<Pokemon> pokemonList = new ArrayList<>();
             for (int i = 1; i <= TOTAL_POKEMON; i++) {
@@ -45,7 +44,9 @@ public class PokemonService {
         } else {
             return pokemonFromCache;
         }
-
+    }
+    public List<Pokemon> getPokemon() {
+        return pokemonList;
     }
 
     public List<GenericDisplayPokemon> getAllDisplayPokemon() {

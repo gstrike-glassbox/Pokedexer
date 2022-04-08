@@ -2,6 +2,7 @@ package com.example.pokedexer.pokedex.controller;
 
 import com.example.pokedexer.pokedex.dto.GenericDisplayPokemon;
 import com.example.pokedexer.pokedex.services.PokemonService;
+import me.sargunvohra.lib.pokekotlin.model.Pokemon;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,8 +20,8 @@ public class PokemonController {
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping("/displaypokemon")
-    public List<GenericDisplayPokemon> getDisplayPokemon() {
-        return pokemonService.getAllDisplayPokemon();
+    @GetMapping("/allpokemon")
+    public List<Pokemon> getDisplayPokemon() {
+        return pokemonService.getPokemon();
     }
 }

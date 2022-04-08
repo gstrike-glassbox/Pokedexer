@@ -2,8 +2,8 @@ import { Col, Input, Row } from "antd";
 import { FC, useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { PokemonContext } from "../App";
-import { IDisplayPokemon } from "../interfaces/IDisplayPokemon";
-import { IPokemon } from "../interfaces/IPokemon";
+import { DisplayPokemon } from "../interfaces/DisplayPokemon";
+import { Pokemon } from "../interfaces/Pokemon";
 import './pokedex.css';
 import PokemonCard from "./pokemonCards/pokemonCard";
 
@@ -14,8 +14,8 @@ const Pokedex: FC = () => {
     const pokemon = useContext(PokemonContext);
 
 
-    const search = (pokemonArr: IPokemon[]) => {
-        return pokemonArr.filter((pokemon: IPokemon) => {
+    const search = (pokemonArr: Pokemon[]) => {
+        return pokemonArr.filter((pokemon: Pokemon) => {
             return searchParam.some((filteredPokemon) => {
                 return (
                     // @ts-ignore: Object is possibly 'null'.
@@ -47,16 +47,16 @@ const Pokedex: FC = () => {
             </Row>
             <Row gutter={16}>
                 {pokemon.length > 0 ? search(pokemon).map(poke => {
-                    let displayPoke: IDisplayPokemon = {
+                    let displayPoke: DisplayPokemon = {
                         id: poke.id, 
                         name: poke.name, 
-                        types: poke.types,
-                        maleFrontSprite: poke.maleFrontSprite,
-                        maleFrontSpriteShiny: poke.maleFrontSpriteShiny,
-                        femaleFrontSprite: poke.femaleFrontSprite,
-                        femaleFrontSpriteShiny: poke.femaleFrontSpriteShiny,
-                        maleBackSprite:poke.maleBackSprite,
-                        femaleBackSprite: poke.femaleBackSprite
+                        typeName: poke.types.map(p => p.type.name),
+                        maleFrontSprite: poke.sprites.frontDefault,
+                        maleFrontSpriteShiny: poke.sprites.frontShiny,
+                        femaleFrontSprite: poke.sprites.frontFemale,
+                        femaleFrontSpriteShiny: poke.sprites.frontShinyFemale,
+                        maleBackSprite: poke.sprites.backDefault,
+                        femaleBackSprite: poke.sprites.backFemale
                     }
                     return <Col span={8} key={poke.id}>
                         <Link to={`pokemon/${poke.name}`} >

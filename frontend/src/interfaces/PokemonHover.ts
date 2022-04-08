@@ -1,11 +1,9 @@
-export interface IPokemon {
+export interface HoverPokemon {
     id: number;
     name: string;
-    types: string[];
+    typeName: string[];
     maleFrontSprite: string;
-    maleFrontSpriteShiny: string;
     femaleFrontSprite?: string;
-    femaleFrontSpriteShiny?: string;
     maleBackSprite: string;
     femaleBackSprite?: string;
 }

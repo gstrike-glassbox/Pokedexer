@@ -1,7 +1,7 @@
-export interface IDisplayPokemon {
+export interface DisplayPokemon {
     id: number;
     [name: string]: string | number | string[] | boolean | undefined;
-    types: string[];
+    typeName: string[];
     maleFrontSprite: string;
     maleFrontSpriteShiny: string;
     femaleFrontSprite?: string;

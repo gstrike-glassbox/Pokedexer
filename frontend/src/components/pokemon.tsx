@@ -16,8 +16,8 @@ const Pokemon: FC = () => {
         <div  style={{ textAlign: 'center', zIndex: 1, width: '100%' }}>
             <Row gutter={16}>
                 <Col span={8}>
-                    <PokemonCard id={pokemon.id} name={(pokemon.name as string)} types={pokemon.types} maleFrontSprite={pokemon.maleFrontSprite} maleFrontSpriteShiny={pokemon.maleFrontSpriteShiny} femaleFrontSprite={pokemon.femaleFrontSprite}
-                        femaleFrontSpriteShiny={pokemon.femaleFrontSpriteShiny} maleBackSprite={pokemon.maleBackSprite} femaleBackSprite={pokemon.femaleBackSprite} allowHover={false} />
+                    <PokemonCard id={pokemon.id} name={(pokemon.name as string)} typeName={pokemon.types.map(p => p.type.name)} maleFrontSprite={pokemon.sprites.frontDefault} maleFrontSpriteShiny={pokemon.sprites.frontShiny} femaleFrontSprite={pokemon.sprites.frontFemale}
+                        femaleFrontSpriteShiny={pokemon.sprites.frontShinyFemale} maleBackSprite={pokemon.sprites.backDefault} femaleBackSprite={pokemon.sprites.backFemale} allowHover={false} showFullCard={true} />
 
                 </Col>
                 <Col span={8}>
