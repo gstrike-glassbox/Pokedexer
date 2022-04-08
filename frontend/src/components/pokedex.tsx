@@ -1,11 +1,10 @@
 import { Col, Input, Row } from "antd";
-import axios from "axios";
-import { FC, useContext, useEffect, useState } from "react";
+import { FC, useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import {App as appPoke, PokemonContext} from "../App";
+import { PokemonContext } from "../App";
+import { IDisplayPokemon } from "../interfaces/IDisplayPokemon";
 import { IPokemon } from "../interfaces/IPokemon";
 import './pokedex.css';
-import Pokemon from "./pokemon";
 import PokemonCard from "./pokemonCards/pokemonCard";
 
 const Pokedex: FC = () => {
@@ -31,27 +30,37 @@ const Pokedex: FC = () => {
 
     return (
         <div className="site-card-wrapper" style={{ textAlign: 'center', zIndex: 1, width: '100%' }}>
-            <Row gutter={16} style={{paddingBottom: '30px', paddingTop: '30px'}}> 
-            <Col span={8}> </Col>
-            <Col span={8}>
-            <div className="search-wrapper">
-                <Input placeholder="Search by name or id Eg: Pikachu, 167 (spinarak)"
-                    name="search-form"
-                    id="search-form"
-                    value={q}
-                    onChange={(e) => setQ(e.target.value)}
-                    type="search"
-                />
-            </div>
-             </Col>
-            <Col span={8}> </Col>
+            <Row gutter={16} style={{ paddingBottom: '30px', paddingTop: '30px' }}>
+                <Col span={8}> </Col>
+                <Col span={8}>
+                    <div className="search-wrapper">
+                        <Input placeholder="Search by name or id Eg: Pikachu, 167 (spinarak)"
+                            name="search-form"
+                            id="search-form"
+                            value={q}
+                            onChange={(e) => setQ(e.target.value)}
+                            type="search"
+                        />
+                    </div>
+                </Col>
+                <Col span={8}> </Col>
             </Row>
             <Row gutter={16}>
                 {pokemon.length > 0 ? search(pokemon).map(poke => {
+                    let displayPoke: IDisplayPokemon = {
+                        id: poke.id, 
+                        name: poke.name, 
+                        types: poke.types,
+                        maleFrontSprite: poke.maleFrontSprite,
+                        maleFrontSpriteShiny: poke.maleFrontSpriteShiny,
+                        femaleFrontSprite: poke.femaleFrontSprite,
+                        femaleFrontSpriteShiny: poke.femaleFrontSpriteShiny,
+                        maleBackSprite:poke.maleBackSprite,
+                        femaleBackSprite: poke.femaleBackSprite
+                    }
                     return <Col span={8} key={poke.id}>
                         <Link to={`pokemon/${poke.name}`} >
-                            <PokemonCard id={poke.id} name={(poke.name as string)} types={poke.types} maleFrontSprite={poke.maleFrontSprite} maleFrontSpriteShiny={poke.maleFrontSpriteShiny} femaleFrontSprite={poke.femaleFrontSprite}
-                            femaleFrontSpriteShiny={poke.femaleFrontSpriteShiny} maleBackSprite={poke.maleBackSprite} femaleBackSprite={poke.femaleBackSprite} allowHover={false}/>
+                            <PokemonCard {...displayPoke} allowHover={true} />
                         </Link>
                     </Col>
                 }) : ""}
