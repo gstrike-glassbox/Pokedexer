@@ -1,0 +1,40 @@
+version: '3.8'
+services:
+  redis-cache:
+    image: redis:latest
+    restart: always
+    ports:
+      - '6379:6379'
+    expose:
+      - '6379'
+    command: redis-server --bind redis-cache --save 20 1 --loglevel warning
+    volumes:
+      - cache:/data
+    networks:
+      - pokedex-network
+
+  pokedex-container:
+    image: pokedex:1
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+      - /data/pokedex
+    ports:
+      - "8080:8080"
+    networks:
+      - pokedex-network
+    depends_on:
+      - redis-cache
+    environment:
+      - WAIT_HOSTS=redis-cache
+
+volumes:
+  cache:
+    driver: local
+  pokedex-container:
+      driver: local
+
+networks:
+  pokedex-network:
+    driver: bridge

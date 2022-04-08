@@ -51,12 +51,7 @@ const Pokedex: FC = () => {
                         id: poke.id, 
                         name: poke.name, 
                         typeName: poke.types.map(p => p.type.name),
-                        maleFrontSprite: poke.sprites.frontDefault,
-                        maleFrontSpriteShiny: poke.sprites.frontShiny,
-                        femaleFrontSprite: poke.sprites.frontFemale,
-                        femaleFrontSpriteShiny: poke.sprites.frontShinyFemale,
-                        maleBackSprite: poke.sprites.backDefault,
-                        femaleBackSprite: poke.sprites.backFemale
+                        sprites: poke.sprites
                     }
                     return <Col span={8} key={poke.id}>
                         <Link to={`pokemon/${poke.name}`} >

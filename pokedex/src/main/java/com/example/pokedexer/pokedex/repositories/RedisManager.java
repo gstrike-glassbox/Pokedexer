@@ -25,7 +25,8 @@ public class RedisManager {
     public static JedisPool initJedisPool() {
         if (jedisPool == null) {
             JedisPoolConfig poolConfig = buildPoolConfig();
-            JedisPool jedisPool = new JedisPool(poolConfig, "http://localhost:6379");
+            System.out.println("redis: http://redis-cache:6379");
+            JedisPool jedisPool = new JedisPool(poolConfig, "http://redis-cache:6379");
             return jedisPool;
         }
         else {

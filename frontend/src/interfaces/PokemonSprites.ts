@@ -1,10 +1,10 @@
 export interface PokemonSprites {
-    backDefault: string;
-    backShiny: string;
     frontDefault: string;
     frontShiny: string;
-    backFemale: string;
-    backShinyFemale: string;
+    backDefault: string;
+    backShiny: string;
     frontFemale: string;
     frontShinyFemale: string;
+    backFemale: string;
+    backShinyFemale: string;
 }

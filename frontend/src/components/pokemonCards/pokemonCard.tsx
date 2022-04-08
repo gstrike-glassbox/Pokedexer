@@ -19,15 +19,21 @@ const PokemonCard: FC<DisplayPokemon> = ({ ...props }): ReactElement => {
                 onMouseEnter={triggerHover}
                 onMouseLeave={triggerHover}
             >
-                {props.allowHover && hoverOver ? <CardHover id={props.id} name={(props.name as string)} typeName={props.typeName} maleFrontSprite={props.maleFrontSprite} maleBackSprite={(props.maleBackSprite as string)} femaleFrontSprite={props.femaleFrontSprite}
-                    femaleBackSprite={props.femaleBackSprite} /> : null}
-                <img src={props.maleFrontSprite} alt="pokemon-male" />
-                <img src={props.maleFrontSpriteShiny} alt="pokemon-male-shiny" />
-                {props.femaleFrontSprite ? <img className="female-sprite" src={props.femaleFrontSprite} alt="pokemon-female" /> : null}
-                {props.femaleFrontSpriteShiny ? <img className="female-sprite" src={props.femaleFrontSpriteShiny} alt="pokemon-female-shiny" /> : null}
-                {props.showFullCard && props.maleBackSprite ? <img className="male-sprite-back" src={props.maleBackSprite} alt="pokemon-male-back" /> : null}
-                {props.showFullCard && props.femaleBackSprite ? <img className="female-sprite-back" src={props.femaleBackSprite} alt="pokemon-female-back" /> : null}
-
+                {props.allowHover && hoverOver ? <CardHover id={props.id} name={(props.name as string)} typeName={props.typeName} maleFrontSprite={props.sprites.frontDefault} maleBackSprite={props.sprites.backDefault} femaleFrontSprite={props.sprites.frontFemale}
+                    femaleBackSprite={props.sprites.backFemale} /> : null}
+                {
+                    Object.entries(props.sprites).map(([key, sprite]) => {
+                        if (sprite) {
+                            if (props.showFullCard) {
+                                return <><img src={sprite} alt={`pokemon-${sprite}`} /></>
+                            }
+                            else if (!sprite.toLowerCase().includes("back")) {
+                                return <img src={sprite} alt={`pokemon-${sprite}`} />
+                            }
+                        }
+                        return null;
+                    })
+                }
             </Card>
         </div>
     );
