@@ -8,7 +8,7 @@
 - Clone Repo
 - Go to root directory that contains docker-compose.yml
 - Open a terminal here
-- Run docker-compose up --build
+- Copy docker-compose up --build into the terminal and run
 - Wait for Docker to do it's thing, can take a few minutes depending on network connection
 - Go to http://localhost:3000
 
