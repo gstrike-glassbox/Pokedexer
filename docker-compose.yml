@@ -30,6 +30,7 @@ services:
       - WAIT_HOSTS=redis-cache
 
   frontend:
+    image: frontend:1
     stdin_open: true
     environment:
       - CHOKIDAR_USEPOLLING=true
